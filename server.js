@@ -1,14 +1,21 @@
 import express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
+import { productRoutes } from "./routes/productRoutes.js";
+import { supplierRoutes } from "./routes/supplierRoutes.js";
+import { categoryRoutes } from "./routes/categoryRoutes.js";
 
 dotenv.config();
 
 const app = express();
 
+app.use(express.json());
+
 connectDB();
 
-app.use(express.json());
+app.use("/api/v1/products", productRoutes);
+app.use("/api/v1/suppliers", supplierRoutes);
+app.use("/api/v1/categories", categoryRoutes);
 
 const PORT = process.env.PORT || 5000;
 
