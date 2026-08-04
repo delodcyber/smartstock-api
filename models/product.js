@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
-import { PRODUCT_UNITS } from "../utils/constants";
-import { toTitleCase } from "../utils/stringHelpers";
+import { PRODUCT_UNITS } from "../utils/constants.js";
+import { toTitleCase } from "../utils/stringHelpers.js";
+import { generateCode } from "../utils/generateCode.js";
 
 const productSchema = new mongoose.Schema({
     sku: {
@@ -92,6 +93,16 @@ const productSchema = new mongoose.Schema({
 }
 );
 
+productSchema.pre("validate", async function (next) {
+
+    if (!this.SKU) {
+        this.SKU = await generateCode(
+            mongoose.model("Product"),
+            "SKU",
+            "PRD"
+        );
+    }
+});
 
 const Product = mongoose.model("Product", productSchema);
 export { Product };
