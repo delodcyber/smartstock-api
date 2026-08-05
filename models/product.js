@@ -95,10 +95,10 @@ const productSchema = new mongoose.Schema({
 
 productSchema.pre("validate", async function (next) {
 
-    if (!this.SKU) {
-        this.SKU = await generateCode(
+    if (!this.sku) {
+        this.sku = await generateCode(
             mongoose.model("Product"),
-            "SKU",
+            "sku",
             "PRD"
         );
     }
