@@ -1,0 +1,46 @@
+import dotenv from "dotenv";
+import swaggerJSDoc from "swagger-jsdoc";
+import { productSchema } from "../docs/schemas/productSwagger.js";
+import { supplierSchema } from "../docs/schemas/supplierSwagger.js"
+import { categorySchema } from "../docs/schemas/categorySwagger.js"
+
+dotenv.config();
+
+
+const options = {
+    definition: {
+        openapi: "3.0.0",
+
+        info: {
+            title: "SmartStock Inventory API",
+            version: "1.0.0",
+            description:
+                "REST API for managing products, suppliers, and categories."
+        },
+
+        servers: [
+            {
+                url: `${process.env.APP_URL}/api/v1`,
+                description: "SmartStock API"
+            }
+        ],
+
+        components: {
+            schemas: {
+                ...productSchema,
+                ...supplierSchema,
+                ...categorySchema
+            }
+        }
+    },
+
+    apis: [
+        "./routes/*.js",
+        "./models/*.js"
+    ]
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+export { swaggerSpec };
+
