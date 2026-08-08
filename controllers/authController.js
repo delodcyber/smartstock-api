@@ -1,4 +1,4 @@
-import { generateToken } from "../utils/jwt"
+import { generateToken } from "../utils/jwt.js"
 
 
 const githubCallback = async (req, res) => {

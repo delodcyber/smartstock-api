@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
 import swaggerJSDoc from "swagger-jsdoc";
 import { productSchema } from "../docs/schemas/productSwagger.js";
-import { supplierSchema } from "../docs/schemas/supplierSwagger.js"
-import { categorySchema } from "../docs/schemas/categorySwagger.js"
+import { supplierSchema } from "../docs/schemas/supplierSwagger.js";
+import { categorySchema } from "../docs/schemas/categorySwagger.js";
+import { inventoryTransactionSchema } from "../docs/schemas/inventoryTransactionSwagger.js";
 
 dotenv.config();
 
@@ -29,7 +30,8 @@ const options = {
             schemas: {
                 ...productSchema,
                 ...supplierSchema,
-                ...categorySchema
+                ...categorySchema,
+                ...inventoryTransactionSchema
             }
         }
     },

@@ -1,6 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import passport from "passport";
 import { Strategy as GitHubStrategy } from "passport-github2";
-import 'dotenv/config';
 import { User } from "../models/user.js";
 import { USER_ROLES } from "../utils/constants.js";
 
@@ -8,9 +10,9 @@ const configurePassport = () => {
     passport.use(
         new GitHubStrategy(
             {
-                clientID: process.env.CLIENT_ID,
+                clientID: process.env.GITHUB_CLIENT_ID,
                 clientSecret: process.env.GITHUB_CLIENT_SECRET,
-                callbackURL: process.env.GITHU_CALLBACK_URL
+                callbackURL: process.env.GITHUB_CALLBACK_URL
             },
             async(accessToken, refreshToken, profile, done) => {
                 try {
