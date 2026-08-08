@@ -6,10 +6,12 @@ import { connectDB } from "../config/db.js";
 import { Category } from "../models/category.js";
 import { Supplier } from "../models/supplier.js";
 import { Product } from "../models/product.js";
+import { InventoryTransaction } from "../models/inventoryTransaction.js";
 
 import { categories } from "./data/categories.js";
 import { suppliers } from "./data/suppliers.js";
 import { products } from "./data/products.js";
+import { inventoryTransactions } from "./data/inventoryTransactions.js";
 
 dotenv.config();
 
@@ -22,6 +24,7 @@ const seedDatabase = async () => {
         await Product.deleteMany();
         await Supplier.deleteMany();
         await Category.deleteMany();
+        await InventoryTransaction.deleteMany();
 
         console.log("Existing inventory data cleared.");
 
@@ -73,6 +76,34 @@ const seedDatabase = async () => {
         }
 
         console.log(`${productDocuments.length} products seeded.`);
+
+        // Seed Inventory Transactions
+        const transactionDocuments = [];
+
+        for (const transaction of inventoryTransactions) {
+            const product = productDocuments.find(
+                product => product.sku === transaction.sku
+            );
+
+            if (!product) {
+                throw new Error(
+                    `Product with SKU ${transaction.sku} was not found.`
+                );
+            }
+
+            const savedTransaction = await InventoryTransaction.create({
+                product: product._id,
+                transactionType: transaction.transactionType,
+                quantity: transaction.quantity,
+                note: transaction.note
+            });
+
+            transactionDocuments.push(savedTransaction);
+        }
+
+        console.log(
+            `${transactionDocuments.length} inventory transactions seeded.`
+        );
         console.log("Database seeded successfully.");
 
     } catch (error) {
@@ -84,5 +115,6 @@ const seedDatabase = async () => {
         console.log("Database connection closed.");
     }
 };
+
 
 seedDatabase();
