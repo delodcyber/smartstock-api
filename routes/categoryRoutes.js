@@ -12,6 +12,7 @@ import {
     updateCategory,
     deleteCategory
 } from "../controllers/categoryController.js";
+import { authenticate } from "../middleware/auth.js"
 
 const router = express.Router();
 
@@ -54,6 +55,8 @@ router.get("/:id", getCategoryById);
  *   post:
  *     summary: Create a new category
  *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -66,7 +69,7 @@ router.get("/:id", getCategoryById);
  *       400:
  *         description: Validation error.
  */
-router.post("/", createCategory);
+router.post("/", authenticate, createCategory);
 
 /**
  * @swagger
@@ -74,6 +77,8 @@ router.post("/", createCategory);
  *   put:
  *     summary: Update an existing category
  *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -93,7 +98,7 @@ router.post("/", createCategory);
  *       404:
  *         description: Category not found.
  */
-router.put("/:id", updateCategory);
+router.put("/:id", authenticate, updateCategory);
 
 /**
  * @swagger
@@ -101,6 +106,8 @@ router.put("/:id", updateCategory);
  *   delete:
  *     summary: Soft delete a category
  *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -114,6 +121,6 @@ router.put("/:id", updateCategory);
  *       404:
  *         description: Category not found.
  */
-router.delete("/:id", deleteCategory);
+router.delete("/:id", authenticate, deleteCategory);
 
 export { router as categoryRoutes };

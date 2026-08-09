@@ -13,6 +13,7 @@ import {
     updateTransaction,
     deleteTransaction
 } from "../controllers/inventoryTransactionController.js";
+import { authenticate } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -22,13 +23,15 @@ const router = express.Router();
  *   get:
  *     summary: Retrieve all inventory transactions
  *     tags: [Inventory Transactions]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Inventory transactions retrieved successfully.
  *       500:
  *         description: Server error.
  */
-router.get("/", getAllTransactions);
+router.get("/", authenticate, getAllTransactions);
 
 /**
  * @swagger
@@ -36,6 +39,8 @@ router.get("/", getAllTransactions);
  *   get:
  *     summary: Retrieve an inventory transaction by ID
  *     tags: [Inventory Transactions]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -51,7 +56,7 @@ router.get("/", getAllTransactions);
  *       500:
  *         description: Server error.
  */
-router.get("/:id", getTransactionById);
+router.get("/:id", authenticate, getTransactionById);
 
 /**
  * @swagger
@@ -59,6 +64,8 @@ router.get("/:id", getTransactionById);
  *   post:
  *     summary: Create an inventory transaction
  *     tags: [Inventory Transactions]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -71,7 +78,7 @@ router.get("/:id", getTransactionById);
  *       400:
  *         description: Validation error.
  */
-router.post("/", createTransaction);
+router.post("/", authenticate, createTransaction);
 
 /**
  * @swagger
@@ -79,6 +86,8 @@ router.post("/", createTransaction);
  *   put:
  *     summary: Update an inventory transaction
  *     tags: [Inventory Transactions]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -100,7 +109,7 @@ router.post("/", createTransaction);
  *       404:
  *         description: Inventory transaction not found.
  */
-router.put("/:id", updateTransaction);
+router.put("/:id", authenticate, updateTransaction);
 
 /**
  * @swagger
@@ -108,6 +117,8 @@ router.put("/:id", updateTransaction);
  *   delete:
  *     summary: Delete an inventory transaction
  *     tags: [Inventory Transactions]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -123,6 +134,6 @@ router.put("/:id", updateTransaction);
  *       500:
  *         description: Server error.
  */
-router.delete("/:id", deleteTransaction);
+router.delete("/:id", authenticate, deleteTransaction);
 
 export { router as inventoryTransactionRoutes };

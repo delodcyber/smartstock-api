@@ -13,6 +13,7 @@ import {
     updateProduct,
     deleteProduct
 } from "../controllers/productController.js";
+import { authenticate } from "../middleware/auth.js"
 
 const router = express.Router();
 
@@ -55,6 +56,8 @@ router.get("/:id", getProductById);
  *   post:
  *     summary: Create a new product
  *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -67,7 +70,7 @@ router.get("/:id", getProductById);
  *       400:
  *         description: Validation error.
  */
-router.post("/", createProduct);
+router.post("/", authenticate, createProduct);
 
 /**
  * @swagger
@@ -75,6 +78,8 @@ router.post("/", createProduct);
  *   put:
  *     summary: Update an existing product
  *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -93,7 +98,7 @@ router.post("/", createProduct);
  *       404:
  *         description: Product not found.
  */
-router.put("/:id", updateProduct);
+router.put("/:id", authenticate, updateProduct);
 
 /**
  * @swagger
@@ -101,6 +106,8 @@ router.put("/:id", updateProduct);
  *   delete:
  *     summary: Soft delete a product
  *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -114,7 +121,7 @@ router.put("/:id", updateProduct);
  *       404:
  *         description: Product not found.
  */
-router.delete("/:id", deleteProduct);
+router.delete("/:id", authenticate, deleteProduct);
 
 
 export { router as productRoutes };

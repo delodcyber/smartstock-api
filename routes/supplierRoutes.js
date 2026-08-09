@@ -13,6 +13,7 @@ import {
     updateSupplier,
     deleteSupplier
 } from "../controllers/supplierController.js";
+import { authenticate } from "../middleware/auth.js"
 
 const router = express.Router();
 
@@ -55,6 +56,8 @@ router.get("/:id", getSupplierById);
  *   post:
  *     summary: Create a new supplier
  *     tags: [Suppliers]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -67,7 +70,7 @@ router.get("/:id", getSupplierById);
  *       400:
  *         description: Validation error.
  */
-router.post("/", createSupplier);
+router.post("/", authenticate, createSupplier);
 
 /**
  * @swagger
@@ -75,6 +78,8 @@ router.post("/", createSupplier);
  *   put:
  *     summary: Update an existing supplier
  *     tags: [Suppliers]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -94,7 +99,7 @@ router.post("/", createSupplier);
  *       404:
  *         description: Supplier not found.
  */
-router.put("/:id", updateSupplier);
+router.put("/:id", authenticate, updateSupplier);
 
 /**
  * @swagger
@@ -102,6 +107,8 @@ router.put("/:id", updateSupplier);
  *   delete:
  *     summary: Soft delete a supplier
  *     tags: [Suppliers]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -115,7 +122,7 @@ router.put("/:id", updateSupplier);
  *       404:
  *         description: Supplier not found.
  */
-router.delete("/:id", deleteSupplier);
+router.delete("/:id", authenticate, deleteSupplier);
 
 
 export { router as supplierRoutes };

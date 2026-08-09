@@ -1,6 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
-
 import passport from "passport";
 import { Strategy as GitHubStrategy } from "passport-github2";
 import { User } from "../models/user.js";
@@ -19,8 +16,32 @@ const configurePassport = () => {
                     const githubId = profile.id;
                     const username = profile.username;
                     const displayName = profile.displayName;
-                    const email = profile.emails?.[0]?.value;
                     const avatar = profile.photos?.[0]?.value;
+                    const emailResponse = await fetch(
+                        "https://api.github.com/user/emails",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${accessToken}`,
+                                Accept: "application/vnd.github+json"
+                            }
+                        }
+                    );
+
+                    const emails = await emailResponse.json();
+
+                    const primaryEmail = emails.find(
+                        email => email.primary && email.verified
+                    );
+
+                    if (!primaryEmail) {
+                        return done(
+                            new Error("No verified primary GitHub email found."),
+                            null
+                        );
+                    }
+
+                    const email = primaryEmail.email;
+
 
                     let user = await User.findOne({
                         githubId: githubId
