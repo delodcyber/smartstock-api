@@ -31,7 +31,9 @@ const options = {
                 bearerAuth: {
                     type: "http",
                     scheme: "bearer",
-                    bearerFormat: "JWT"
+                    bearerFormat: "JWT",
+                    description:
+                        "Enter the JWT returned after successful GitHub authentication."
                 }
             },
             
