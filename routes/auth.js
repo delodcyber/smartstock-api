@@ -23,7 +23,7 @@ const router = express.Router();
  *       rather than using Swagger's "Try it out" button. After the user authorizes
  *       the application on GitHub, GitHub redirects to the callback endpoint and
  *       the API returns a JWT.
- *       http://localhost:3000/api/v1/auth/github
+ *       https://smartstock-api-kj1u.onrender.com/api-docs/api/v1/auth/github
  *     tags: [Authentication]
  *     responses:
  *       302:
